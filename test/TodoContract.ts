@@ -8,9 +8,6 @@ import { ethers } from "hardhat";
 
 describe("TodoContract Deployment", function () {
   async function deployTodoContract() {
-    // Contracts are deployed using the first signer/account by default
-    const [owner, otherAccount] = await ethers.getSigners();
-
     const TodoContract = await ethers.getContractFactory("TodoContract");
     const {
       addTodo,
@@ -27,15 +24,12 @@ describe("TodoContract Deployment", function () {
       getUserTodos,
       deleteTodoByIndex,
       toggleIsCompleted,
-      owner,
-      otherAccount,
     };
   }
 
   describe("Testing the todo contract", () => {
     it("should add a new todo", async () => {
       const { addTodo, getUserTodos } = await loadFixture(deployTodoContract);
-
       await addTodo("Title", "Content");
 
       const todos = await getUserTodos();
@@ -83,9 +77,9 @@ describe("TodoContract Deployment", function () {
 
       const todos = await getUserTodos();
 
-      expect(todos[0].length).to.deep.equal(0);
-      expect(todos[1].length).to.deep.equal(0);
-      expect(todos[2].length).to.deep.equal(0);
+      expect(todos[0].length).to.equal(0);
+      expect(todos[1].length).to.equal(0);
+      expect(todos[2].length).to.equal(0);
     });
   });
 });
