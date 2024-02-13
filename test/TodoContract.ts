@@ -72,14 +72,19 @@ describe("TodoContract Deployment", function () {
         deployTodoContract
       );
 
+      // Add a todo
       await addTodo("Title", "Content");
+
+      // Delete the added todo
       await deleteTodoByIndex(0);
 
-      const todos = await getUserTodos();
+      // Retrieve user's todos
+      const [titles, contents, isCompletedArray] = await getUserTodos();
 
-      expect(todos[0].length).to.equal(0);
-      expect(todos[1].length).to.equal(0);
-      expect(todos[2].length).to.equal(0);
+      // Expect all arrays to have length 0 after deletion
+      expect(titles.length).to.equal(0);
+      expect(contents.length).to.equal(0);
+      expect(isCompletedArray.length).to.equal(0);
     });
   });
 });

@@ -57,6 +57,10 @@ contract TodoContract {
     function toggleIsCompleted(uint index) external {
         // Ensure the provided index is within the bounds of the todos array
         require(index < todos.length, "NOTE DOES NOT EXIST");
+        require(
+            todos[index].user == msg.sender,
+            "You are not allowed to perform this function"
+        );
 
         // Toggle the completion status of the todo at the specified index
         todos[index].isCompleted = !todos[index].isCompleted;
@@ -65,10 +69,22 @@ contract TodoContract {
     // Function to delete a todo item by index
     function deleteTodoByIndex(uint index) external {
         // Ensure the provided index is within the bounds of the todos array
-        require(index < todos.length, "NOTE DOES NOT EXIST");
+        require(
+            index < todos.length,
+            "Todo does not exist in your list of todos!"
+        );
+        require(
+            todos[index].user == msg.sender,
+            "You are not allowed to perform this function"
+        );
 
-        // Delete the todo item at the specified index
-        delete todos[index];
+        // Shift elements after the index to be deleted one position to the left
+        for (uint i = index; i < todos.length - 1; i++) {
+            todos[i] = todos[i + 1];
+        }
+
+        // Reduce the length of the todos array by one to remove the last element
+        todos.pop();
     }
 
     // Function to update the title and content of a todo item by index
@@ -79,6 +95,10 @@ contract TodoContract {
     ) external {
         // Ensure the provided index is within the bounds of the todos array
         require(index < todos.length, "NOTE DOES NOT EXIST");
+        require(
+            todos[index].user == msg.sender,
+            "You are not allowed to perform this function"
+        );
 
         // Update the title and content of the todo item at the specified index
         todos[index].title = _title;
